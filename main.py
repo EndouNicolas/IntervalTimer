@@ -1,5 +1,26 @@
 import time
 import keyboard
+import flet as ft
+
+
+def main(page: ft.Page):
+    # 初期設定
+    page.title = "インターバルタイマー"
+
+    # ウィンドウイベントの処理
+    def on_window_event(e: ft.WindowEvent):
+        if e.event_type == "close":
+            print("Close is clicked")
+
+    page.on_event = on_window_event
+
+    # 必要ならここでUI要素を追加
+    page.update()
+
+
+# アプリケーションを開始
+ft.app(target=main)
+
 
 def interval_timer(duration: int):
     """
@@ -17,16 +38,17 @@ def interval_timer(duration: int):
             print(f"残り時間: {remaining_time:.1f}秒", end="\r")
 
             # スペースキーが押されたらリセットして再スタート
-            if keyboard.is_pressed('space'):
+            if keyboard.is_pressed("space"):
                 print("\nタイマーを再スタートします。")
                 break
-            
+
             time.sleep(0.01)  # 進行状況を更新する間隔
             elapsed_time = time.time() - start_time
         else:
             print("\nタイマー終了！")
-            while not keyboard.is_pressed('q'):
+            while not keyboard.is_pressed("q"):
                 time.sleep(0.01)
+
 
 if __name__ == "__main__":
     try:
