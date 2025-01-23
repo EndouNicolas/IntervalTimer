@@ -22,9 +22,6 @@ def Sliders():
         ]
     )
     return slider_ui
-
-def KyboardInput():
-    def key_pressed(e):
         
 
 def main(page: ft.Page):
