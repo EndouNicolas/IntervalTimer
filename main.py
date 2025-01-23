@@ -3,7 +3,32 @@ import keyboard
 import flet as ft
 
 
+def Sliders():
+
+    def slider_changed(e):
+        slider_value = e.control.value
+        t.value = f"Slider changed to {slider_value}"
+        t.update()
+
+    t = ft.Text()
+
+    # この時点ではUIだけを構築
+    slider_ui = ft.Column(
+        controls=[
+            ft.Text("Slider with 'on_change' event:"),
+            ft.Slider(min=0, max=59, divisions=59, label="{value}M", on_change=slider_changed),
+            ft.Slider(min=1, max=12, divisions=11, label="{value}S", on_change=slider_changed),
+            t,
+        ]
+    )
+    return slider_ui
+
+def KyboardInput():
+    def key_pressed(e):
+        
+
 def main(page: ft.Page):
+    slider_ui = Sliders()
     # 初期設定
     page.title = "インターバルタイマー"
 
@@ -15,6 +40,11 @@ def main(page: ft.Page):
     page.on_event = on_window_event
 
     # 必要ならここでUI要素を追加
+    k = ft.Text("")
+
+    page.add(k)
+    page.add(slider_ui)
+
     page.update()
 
 
