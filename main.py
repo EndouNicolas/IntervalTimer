@@ -34,6 +34,16 @@ def main(page: ft.Page):
         if e.event_type == "close":
             print("Close is clicked")
 
+#テキストインプットを取得する
+    def on_keyboard(e: ft.KeyboardEvent):
+        a = e.key
+        if a==" ":
+            page.add(ft.Text("Space key"))
+        else:
+            page.add(ft.Text(a))
+    page.on_keyboard_event = on_keyboard
+    
+
     page.on_event = on_window_event
 
     # 必要ならここでUI要素を追加
@@ -41,7 +51,6 @@ def main(page: ft.Page):
 
     page.add(k)
     page.add(slider_ui)
-
     page.update()
 
 
