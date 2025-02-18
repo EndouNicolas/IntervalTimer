@@ -1,4 +1,5 @@
 import flet as ft
+import time
 
 class Timer(ft.UserControl):
 #スライダーを作成
@@ -8,10 +9,16 @@ class Timer(ft.UserControl):
         t = ft.Text()
         k = ft.Text()
         
-        def get_curretn_value(e):
+        def start_timer(e):
             m, s = get_slider_values()
-            k.value=f"Current slider values: {m}M {s}S"
+            start_time =time.time()
+            elapsed_time = 0
+            target_time = m * 60 + s
+            while elapsed_time < target_time:
+                remaining_time = target_time - elapsed_time
+            k.value=f"s:{target_time}"
             k.update()
+        
 
         def slider_changed(e):
             t.value = f"Slider changed to {slider_value_m.current.value}M {slider_value_s.current.value}S"
@@ -22,7 +29,7 @@ class Timer(ft.UserControl):
                 ft.Slider(ref=slider_value_m, min=0, max=59, divisions=59, label="{value}M", on_change=slider_changed),
                 ft.Slider(ref=slider_value_s, min=1, max=12, divisions=11, label="{value}S", on_change=slider_changed),
                 t,
-                ft.ElevatedButton("設定", on_click=get_curretn_value),
+                ft.ElevatedButton("開始", on_click=start_timer),
                 k,
             ]
         )
