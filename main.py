@@ -57,12 +57,13 @@ def main(page: ft.Page):
     page.on_keyboard_event = on_keyboard
     page.on_event = on_window_event
 
+    """
     def get_curretn_value(e):
         m, s = get_values()
         page.add(ft.Text(f"Current slider values: {m}M {s}S"))
         
     page.add(ft.ElevatedButton("設定", on_click=get_curretn_value))
-
+    """
 
     # 必要ならここでUI要素を追加
     k = ft.Text("")
