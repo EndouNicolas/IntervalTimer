@@ -2,30 +2,30 @@ import time
 import keyboard
 import flet as ft
 
-
+#スライダーを作成
 def Sliders():
-
-    def slider_changed(e):
-        slider_value = e.control.value
-        t.value = f"Slider changed to {slider_value}"
-        t.update()
-
+    slider_value_m = ft.Ref[ft.Slider]()  # 分のスライダー値を保持
+    slider_value_s = ft.Ref[ft.Slider]()  # 秒のスライダー値を保持
     t = ft.Text()
 
-    # この時点ではUIだけを構築
+    def slider_changed(e):
+        t.value = f"Slider changed to {slider_value_m.current.value}M {slider_value_s.current.value}S"
+        t.update()
+
     slider_ui = ft.Column(
         controls=[
-            ft.Text("Slider with 'on_change' event:"),
-            ft.Slider(min=0, max=59, divisions=59, label="{value}M", on_change=slider_changed),
-            ft.Slider(min=1, max=12, divisions=11, label="{value}S", on_change=slider_changed),
+            ft.Slider(ref=slider_value_m, min=0, max=59, divisions=59, label="{value}M", on_change=slider_changed),
+            ft.Slider(ref=slider_value_s, min=1, max=12, divisions=11, label="{value}S", on_change=slider_changed),
             t,
         ]
     )
-    return slider_ui
-        
+    
+    def get_slider_values():
+        return slider_value_m.current.value, slider_value_s.current.value
+
+    return slider_ui, get_slider_values
 
 def main(page: ft.Page):
-    slider_ui = Sliders()
     # 初期設定
     page.title = "インターバルタイマー"
 
@@ -34,23 +34,60 @@ def main(page: ft.Page):
         if e.event_type == "close":
             print("Close is clicked")
 
-#テキストインプットを取得する
+#タブを構築
+    k = ft.Tabs(
+        selected_index=1,
+        animation_duration=300,
+        tabs=[
+            ft.Tab(
+                text="Tab 1",
+                content=ft.Container(
+                    content=ft.Text("This is Tab 1"), alignment=ft.alignment.center
+                ),
+            ),
+            ft.Tab(
+                tab_content=ft.Icon(ft.Icons.SEARCH),
+                content=ft.Text("This is Tab 2"),
+            ),
+            ft.Tab(
+                text="Tab 3",
+                icon=ft.Icons.SETTINGS,
+                content=ft.Text("This is Tab 3"),
+            ),
+        ],
+        expand=1,
+    )
+
+    page.add(k)
+
+
+    # テキストインプットを取得する
     def on_keyboard(e: ft.KeyboardEvent):
         a = e.key
-        if a==" ":
+        if a == " ":
             page.add(ft.Text("Space key"))
         else:
             page.add(ft.Text(a))
-    page.on_keyboard_event = on_keyboard
-    
 
+    page.on_keyboard_event = on_keyboard
     page.on_event = on_window_event
 
+    #スライダーのUIを構築
+    slider_ui, get_values = Sliders()
+
+    def get_curretn_value(e):
+        m, s = get_values()
+        page.add(ft.Text(f"Current slider values: {m}M {s}S"))
+        
+    page.add(ft.ElevatedButton("設定", on_click=get_curretn_value))
+
+
+    page.add(slider_ui)
     # 必要ならここでUI要素を追加
     k = ft.Text("")
 
     page.add(k)
-    page.add(slider_ui)
+    page.add(ft.Text())
     page.update()
 
 
