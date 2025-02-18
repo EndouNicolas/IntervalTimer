@@ -1,29 +1,8 @@
 import time
 import keyboard
 import flet as ft
+import timer as tm
 
-#スライダーを作成
-def Sliders():
-    slider_value_m = ft.Ref[ft.Slider]()  # 分のスライダー値を保持
-    slider_value_s = ft.Ref[ft.Slider]()  # 秒のスライダー値を保持
-    t = ft.Text()
-
-    def slider_changed(e):
-        t.value = f"Slider changed to {slider_value_m.current.value}M {slider_value_s.current.value}S"
-        t.update()
-
-    slider_ui = ft.Column(
-        controls=[
-            ft.Slider(ref=slider_value_m, min=0, max=59, divisions=59, label="{value}M", on_change=slider_changed),
-            ft.Slider(ref=slider_value_s, min=1, max=12, divisions=11, label="{value}S", on_change=slider_changed),
-            t,
-        ]
-    )
-    
-    def get_slider_values():
-        return slider_value_m.current.value, slider_value_s.current.value
-
-    return slider_ui, get_slider_values
 
 def main(page: ft.Page):
     # 初期設定
@@ -34,23 +13,29 @@ def main(page: ft.Page):
         if e.event_type == "close":
             print("Close is clicked")
 
+
+    #スライダーのUIを構築
+    slider_ui, get_values = tm.Timer.Sliders()
 #タブを構築
+    """
+    1ページ目は時計､2ページ目はインターバルタイマー､3ページ目はストップウォッチ
+    """
     k = ft.Tabs(
         selected_index=1,
         animation_duration=300,
         tabs=[
             ft.Tab(
-                text="Tab 1",
+                text="時計",
                 content=ft.Container(
                     content=ft.Text("This is Tab 1"), alignment=ft.alignment.center
                 ),
             ),
             ft.Tab(
-                tab_content=ft.Icon(ft.Icons.SEARCH),
-                content=ft.Text("This is Tab 2"),
+                text="タイマー",
+                content=ft.Container(content=slider_ui,alignment=ft.alignment.center),
             ),
             ft.Tab(
-                text="Tab 3",
+                text="ストップウォッチ",
                 icon=ft.Icons.SETTINGS,
                 content=ft.Text("This is Tab 3"),
             ),
@@ -72,9 +57,6 @@ def main(page: ft.Page):
     page.on_keyboard_event = on_keyboard
     page.on_event = on_window_event
 
-    #スライダーのUIを構築
-    slider_ui, get_values = Sliders()
-
     def get_curretn_value(e):
         m, s = get_values()
         page.add(ft.Text(f"Current slider values: {m}M {s}S"))
@@ -82,7 +64,6 @@ def main(page: ft.Page):
     page.add(ft.ElevatedButton("設定", on_click=get_curretn_value))
 
 
-    page.add(slider_ui)
     # 必要ならここでUI要素を追加
     k = ft.Text("")
 
