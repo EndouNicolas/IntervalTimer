@@ -36,7 +36,6 @@ def main(page: ft.Page):
             ),
             ft.Tab(
                 text="ストップウォッチ",
-                icon=ft.Icons.SETTINGS,
                 content=ft.Text("This is Tab 3"),
             ),
         ],

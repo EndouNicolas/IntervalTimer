@@ -1,40 +1,48 @@
 import flet as ft
-import time
+import asyncio
 
 class Timer(ft.UserControl):
-#スライダーを作成
+    @staticmethod
     def Sliders():
-        slider_value_m = ft.Ref[ft.Slider]()  # 分のスライダー値を保持
-        slider_value_s = ft.Ref[ft.Slider]()  # 秒のスライダー値を保持
-        t = ft.Text()
-        k = ft.Text()
-        
-        def start_timer(e):
-            m, s = get_slider_values()
-            start_time =time.time()
-            elapsed_time = 0
-            target_time = m * 60 + s
-            while elapsed_time < target_time:
-                remaining_time = target_time - elapsed_time
-            k.value=f"s:{target_time}"
-            k.update()
-        
+        # スライダー値を保持する変数
+        slider_value_m = ft.Slider(min=0, max=59, divisions=59, label="{value}M")
+        slider_value_s = ft.Slider(min=1, max=12, divisions=11, label="{value}S")
+        time_display = ft.Text()
+        status_text = ft.Text()
+
+        async def count_down(page: ft.Page, total_seconds: int):
+            while total_seconds > 0:
+                time_display.value = f"残り時間: {total_seconds:.2f}秒"
+                page.update()
+                await asyncio.sleep(0.01)
+                total_seconds -= 0.01
+
+            time_display.value = "終了"
+            page.update()
+
+        async def start_timer(e):
+            m, s = slider_value_m.value, slider_value_s.value
+            total_seconds = int(m * 60 + s)
+            status_text.value = f"タイマー開始: {total_seconds}秒"
+            page = e.control.page  # `page` を取得
+            page.update()
+            await count_down(page, total_seconds)
 
         def slider_changed(e):
-            t.value = f"Slider changed to {slider_value_m.current.value}M {slider_value_s.current.value}S"
-            t.update()
+            status_text.value = f"設定時間: {slider_value_m.value}分 {slider_value_s.value}秒"
+            e.control.page.update()
 
         slider_ui = ft.Column(
             controls=[
-                ft.Slider(ref=slider_value_m, min=0, max=59, divisions=59, label="{value}M", on_change=slider_changed),
-                ft.Slider(ref=slider_value_s, min=1, max=12, divisions=11, label="{value}S", on_change=slider_changed),
-                t,
+                slider_value_m,
+                slider_value_s,
                 ft.ElevatedButton("開始", on_click=start_timer),
-                k,
+                status_text,
+                time_display,
             ]
         )
-    
+
         def get_slider_values():
-            return slider_value_m.current.value, slider_value_s.current.value
+            return slider_value_m.value, slider_value_s.value
 
         return slider_ui, get_slider_values
