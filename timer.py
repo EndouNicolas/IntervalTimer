@@ -7,26 +7,41 @@ class Timer(ft.UserControl):
         # スライダー値を保持する変数
         slider_value_m = ft.Slider(min=0, max=59, divisions=59, label="{value}M")
         slider_value_s = ft.Slider(min=1, max=12, divisions=11, label="{value}S")
+        is_started = False
         time_display = ft.Text()
         status_text = ft.Text()
 
         async def count_down(page: ft.Page, total_seconds: int):
+            nonlocal is_started
             while total_seconds > 0:
                 time_display.value = f"残り時間: {total_seconds:.2f}秒"
                 page.update()
                 await asyncio.sleep(0.01)
                 total_seconds -= 0.01
 
+            is_started = False
             time_display.value = "終了"
             page.update()
 
         async def start_timer(e):
+            nonlocal is_started
+            #もしタイマーがスタート状態なら何もしない
+            if is_started:
+                return
+            
+            is_started = True
             m, s = slider_value_m.value, slider_value_s.value
             total_seconds = int(m * 60 + s)
             status_text.value = f"タイマー開始: {total_seconds}秒"
-            page = e.control.page  # `page` を取得
+            page = e.control.page 
             page.update()
             await count_down(page, total_seconds)
+
+        async def stop_timer(e):
+            await asyncio.sleep(0)
+            time_display.value = "停止"
+            e.control.page.update()
+
 
         def slider_changed(e):
             status_text.value = f"設定時間: {slider_value_m.value}分 {slider_value_s.value}秒"
@@ -37,6 +52,7 @@ class Timer(ft.UserControl):
                 slider_value_m,
                 slider_value_s,
                 ft.ElevatedButton("開始", on_click=start_timer),
+                ft.ElevatedButton("停止", on_click=stop_timer),
                 status_text,
                 time_display,
             ]
