@@ -14,6 +14,7 @@ class Timer(ft.UserControl):
         time_display = ft.Text()
         status_text = ft.Text()
         remaining_time = 0
+        started_time = 0 #以前スタートされた時間を保持する変数
 
         async def count_down(page: ft.Page):
             nonlocal is_started,is_stopped,remaining_time
@@ -35,7 +36,7 @@ class Timer(ft.UserControl):
             page.update()
 
         async def start_timer(e):
-            nonlocal is_started,is_stopped,remaining_time
+            nonlocal is_started,is_stopped,remaining_time,started_time
             #もしタイマーがスタート状態なら何もしない
             if is_started:
                 return
@@ -43,7 +44,7 @@ class Timer(ft.UserControl):
             is_stopped = False
             if remaining_time <=0:
                 m, s = slider_value_m.value, slider_value_s.value
-                remaining_time = int(m * 60 + s)
+                started_time=remaining_time = int(m * 60 + s)
             status_text.value = f"タイマー開始: {remaining_time}秒"
             page = e.control.page 
             page.update()
@@ -61,6 +62,15 @@ class Timer(ft.UserControl):
                 else:
                     time_display.value = "再開"
                 e.control.page.update()
+        
+        def reset_timer(e):
+            nonlocal is_started, is_stopped,remaining_time,started_time
+            if is_started and not is_stopped:
+                is_stopped = True
+                is_started = False
+                remaining_time = float(started_time)  # 小数点を保持
+            time_display.value = f"{remaining_time:.2f}秒"  # 表示もフォーマット
+            e.control.page.update()
 
 
         def slider_changed(e):
@@ -73,6 +83,7 @@ class Timer(ft.UserControl):
                 slider_value_s,
                 ft.ElevatedButton("開始", on_click=start_timer),
                 ft.ElevatedButton("停止/再開", on_click=stop_timer),
+                ft.ElevatedButton("リセット", on_click=reset_timer),
                 status_text,
                 time_display,
             ]
