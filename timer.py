@@ -38,8 +38,13 @@ class Timer(ft.UserControl):
             if remaining_time <= 0:
                 m, s = slider_value_m.value, slider_value_s.value
                 started_time = remaining_time = float(m * 60 + s)
+            
             else:
-                remaining_time = started_time  # リセット後も正しい時間で開始
+                m, s = slider_value_m.value, slider_value_s.value
+                if started_time != float(m * 60 + s):
+                    started_time=remaining_time = float(m * 60 + s)
+                else:
+                    remaining_time = started_time  # リセット後も正しい時間で開始
             status_text.value = f"タイマー開始: {remaining_time:.2f}秒"
             page = e.control.page 
             page.update()
@@ -61,7 +66,8 @@ class Timer(ft.UserControl):
             nonlocal is_started, is_stopped, remaining_time, started_time
             is_stopped = True
             is_started = False
-            remaining_time = started_time  # 正しく元の時間を復元
+            #スタート時の時間を復元
+            remaining_time = started_time 
             time_display.value = f"{remaining_time:.2f}秒"
             e.control.page.update()
 
