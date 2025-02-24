@@ -15,7 +15,7 @@ class Timer(ft.UserControl):
         )
         
         status_text = ft.Text("設定時間: 0分 0秒")
-        time_display = ft.Text("残り時間: 0.00秒", size=20, weight=ft.FontWeight.BOLD)
+        time_display = ft.Text("残り時間: 0分 0.00秒", size=20, weight=ft.FontWeight.BOLD)
         
         is_started = False
         is_stopped = False
@@ -28,7 +28,10 @@ class Timer(ft.UserControl):
                 if is_stopped:
                     await asyncio.sleep(0.01)
                     continue 
-                time_display.value = f"残り時間: {remaining_time:.2f}秒"
+                minutes = int(remaining_time // 60)
+                seconds = int(remaining_time % 60)
+                milliseconds = int((remaining_time % 1) * 100)
+                time_display.value = f"残り時間: {minutes}分 {seconds}.{milliseconds:02d}秒"
                 page.update()
                 await asyncio.sleep(0.01)
                 remaining_time -= 0.01
@@ -51,7 +54,7 @@ class Timer(ft.UserControl):
                     started_time = remaining_time = float(m * 60 + s)
                 else:
                     remaining_time = started_time  # リセット後も正しい時間で開始
-            status_text.value = f"タイマー開始: {remaining_time:.2f}秒"
+            status_text.value = f"タイマー開始: {int(remaining_time // 60)}分 {int(remaining_time % 60)}秒"
             page = e.control.page 
             page.update()
             await count_down(page)
@@ -63,7 +66,10 @@ class Timer(ft.UserControl):
             else:
                 is_stopped = not is_stopped
                 if is_stopped:
-                    time_display.value = f"停止: {remaining_time:.2f}秒"
+                    minutes = int(remaining_time // 60)
+                    seconds = int(remaining_time % 60)
+                    milliseconds = int((remaining_time % 1) * 100)
+                    time_display.value = f"停止: {minutes}分 {seconds}.{milliseconds:02d}秒"
                 else:
                     time_display.value = "再開"
                 e.control.page.update()
@@ -72,9 +78,11 @@ class Timer(ft.UserControl):
             nonlocal is_started, is_stopped, remaining_time, started_time
             is_stopped = True
             is_started = False
-            # スタート時の時間を復元
             remaining_time = started_time 
-            time_display.value = f"{remaining_time:.2f}秒"
+            minutes = int(remaining_time // 60)
+            seconds = int(remaining_time % 60)
+            milliseconds = int((remaining_time % 1) * 100)
+            time_display.value = f"{minutes}分 {seconds}.{milliseconds:02d}秒"
             e.control.page.update()
 
         def update_status(e):
