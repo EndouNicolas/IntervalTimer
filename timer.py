@@ -15,7 +15,7 @@ class Timer(ft.UserControl):
         )
         
         status_text = ft.Text("設定時間: 0分 0秒")
-        time_display = ft.Text("残り時間: 0分 0.00秒", size=20, weight=ft.FontWeight.BOLD)
+        time_display = ft.Text("残り時間: 0分 0秒00", size=20, weight=ft.FontWeight.BOLD)
         
         is_started = False
         is_stopped = False
@@ -31,7 +31,7 @@ class Timer(ft.UserControl):
                 minutes = int(remaining_time // 60)
                 seconds = int(remaining_time % 60)
                 milliseconds = int((remaining_time % 1) * 100)
-                time_display.value = f"残り時間: {minutes}分 {seconds}.{milliseconds:02d}秒"
+                time_display.value = f"残り時間: {minutes}分 {seconds}秒{milliseconds:02d}"
                 page.update()
                 await asyncio.sleep(0.01)
                 remaining_time -= 0.01
@@ -69,7 +69,7 @@ class Timer(ft.UserControl):
                     minutes = int(remaining_time // 60)
                     seconds = int(remaining_time % 60)
                     milliseconds = int((remaining_time % 1) * 100)
-                    time_display.value = f"停止: {minutes}分 {seconds}.{milliseconds:02d}秒"
+                    time_display.value = f"停止: {minutes}分 {seconds}秒{milliseconds:02d}"
                 else:
                     time_display.value = "再開"
                 e.control.page.update()
@@ -82,7 +82,7 @@ class Timer(ft.UserControl):
             minutes = int(remaining_time // 60)
             seconds = int(remaining_time % 60)
             milliseconds = int((remaining_time % 1) * 100)
-            time_display.value = f"{minutes}分 {seconds}.{milliseconds:02d}秒"
+            time_display.value = f"{minutes}分 {seconds}秒{milliseconds:02d}"
             e.control.page.update()
 
         def update_status(e):
