@@ -89,10 +89,10 @@ class Timer(ft.UserControl):
 
         def update_status(e):
             status_text.value = f"設定時間: {slider_value_m.value}分 {slider_value_s.value}秒"
-            update_slider_value(e)
+            update_text_value(e)
             e.control.page.update()
             
-        def update_slider_value(e):
+        def update_text_value(e):
             text_input_m.value = slider_value_m.value
             text_input_s.value = slider_value_s.value
             text_input_s.update()

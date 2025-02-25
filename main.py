@@ -41,19 +41,27 @@ def main(page: ft.Page):
         ],
         expand=1,
     )
-
     page.add(k)
+    
 
 
     # テキストインプットを取得する
     def on_keyboard(e: ft.KeyboardEvent):
         a = e.key
         if a == " ":
+            """
             page.add(ft.Text("Space key"))
+            page.update()
+            """
+            return "Space key"
         else:
+            """
             page.add(ft.Text(a))
+            page.update()
+            """
+            return a
 
-    page.on_keyboard_event = on_keyboard
+    page.on_keyboard_event = lambda e: page.add(ft.Text(on_keyboard(e)))
     page.on_event = on_window_event
 
     """
