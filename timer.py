@@ -7,13 +7,15 @@ class Timer(ft.UserControl):
     
     @staticmethod
     def Sliders():
+        #ここでスライダーの変数を作成(UI付き)
         slider_value_m = ft.Slider(
             min=0, max=59, divisions=59, label="{value}M", on_change=lambda e: update_status(e)
         )
+        text_input_m = ft.TextField(value=0,width=300,label="分を入力")
         slider_value_s = ft.Slider(
             min=0, max=59, divisions=59, label="{value}S", on_change=lambda e: update_status(e)
         )
-        
+        text_input_s = ft.TextField(value=0,width=300,label="秒を入力")
         status_text = ft.Text("設定時間: 0分 0秒")
         time_display = ft.Text("残り時間: 0分 0秒00", size=20, weight=ft.FontWeight.BOLD)
         
@@ -87,7 +89,19 @@ class Timer(ft.UserControl):
 
         def update_status(e):
             status_text.value = f"設定時間: {slider_value_m.value}分 {slider_value_s.value}秒"
+            update_slider_value(e)
             e.control.page.update()
+            
+        def update_slider_value(e):
+            text_input_m.value = slider_value_m.value
+            text_input_s.value = slider_value_s.value
+            text_input_s.update()
+            text_input_m.update()
+            
+        def test(e):
+            nonlocal slider_value_m
+            slider_value_m.value = 15
+            slider_value_m.update()
 
         button_row = ft.Row(
             controls=[
@@ -101,7 +115,9 @@ class Timer(ft.UserControl):
         slider_ui = ft.Column(
             controls=[
                 slider_value_m,
+                text_input_m,
                 slider_value_s,
+                text_input_s,
                 status_text,
                 time_display,
                 button_row,
