@@ -11,11 +11,11 @@ class Timer(ft.UserControl):
         slider_value_m = ft.Slider(
             min=0, max=59, divisions=59, label="{value}M", on_change=lambda e: update_status(e)
         )
-        text_input_m = ft.TextField(value=0,width=300,label="分を入力")
+        text_input_m = ft.TextField(value=0,width=300,label="分を入力", on_change=lambda e :update_slider_value(e))
         slider_value_s = ft.Slider(
             min=0, max=59, divisions=59, label="{value}S", on_change=lambda e: update_status(e)
         )
-        text_input_s = ft.TextField(value=0,width=300,label="秒を入力")
+        text_input_s = ft.TextField(value=0,width=300,label="秒を入力", on_change=lambda e:update_slider_value(e))
         status_text = ft.Text("設定時間: 0分 0秒")
         time_display = ft.Text("残り時間: 0分 0秒00", size=20, weight=ft.FontWeight.BOLD)
         
@@ -92,11 +92,18 @@ class Timer(ft.UserControl):
             update_text_value(e)
             e.control.page.update()
             
+        #テキストの値をスライダーの値に合わせる
         def update_text_value(e):
             text_input_m.value = slider_value_m.value
             text_input_s.value = slider_value_s.value
             text_input_s.update()
             text_input_m.update()
+            
+        def update_slider_value(e):
+            slider_value_m.value = text_input_m.value
+            slider_value_s.value = text_input_s.value
+            slider_value_m.update()
+            slider_value_s.update()
             
         def test(e):
             nonlocal slider_value_m
