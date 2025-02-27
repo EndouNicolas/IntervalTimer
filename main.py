@@ -41,6 +41,10 @@ def main(page: ft.Page):
         ],
         expand=1,
     )
+
+    set_theme_button=ft.ElevatedButton(text="テーマ変更")
+    #layout = ft.Row(controls=[k,set_theme_button],alignment=ft.MainAxisAlignment.SPACE_BETWEEN,vertical_alignment=ft.CrossAxisAlignment.CENTER,)
+    #page.add(layout)
     page.add(k)
     
 

@@ -121,17 +121,49 @@ class Timer(ft.UserControl):
 
         slider_ui = ft.Column(
             controls=[
-                slider_value_m,
-                text_input_m,
-                slider_value_s,
-                text_input_s,
-                status_text,
-                time_display,
-                button_row,
+                ft.Text("タイマー設定", size=24, weight=ft.FontWeight.BOLD, text_align=ft.TextAlign.CENTER),
+                ft.Row([
+                    ft.Column([
+                        ft.Text("分", size=16),
+                        slider_value_m,
+                        text_input_m
+                    ], alignment=ft.MainAxisAlignment.CENTER, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+                    ft.Column([
+                        ft.Text("秒", size=16),
+                        slider_value_s,
+                        text_input_s
+                    ], alignment=ft.MainAxisAlignment.CENTER, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
+                ], alignment=ft.MainAxisAlignment.CENTER, spacing=20),
+                
+                ft.Container(
+                    content=status_text,
+                    padding=10,
+                    alignment=ft.alignment.center,
+                ),
+                
+                ft.Container(
+                    content=time_display,
+                    padding=10,
+                    alignment=ft.alignment.center,
+                    bgcolor=ft.colors.BLACK,
+                    border_radius=10
+                ),
+                
+                ft.Row(
+                    controls=[
+                        ft.ElevatedButton("開始", on_click=start_timer, width=100),
+                        ft.ElevatedButton("停止/再開", on_click=stop_timer, width=100),
+                        ft.ElevatedButton("リセット", on_click=reset_timer, width=100),
+                    ],
+                    alignment=ft.MainAxisAlignment.CENTER,
+                    spacing=20
+                )
             ],
-            spacing=10,
+            spacing=20,
             alignment=ft.MainAxisAlignment.CENTER,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
         )
+
 
         def get_slider_values():
             return slider_value_m.value, slider_value_s.value
