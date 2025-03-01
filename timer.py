@@ -76,6 +76,10 @@ class Timer(ft.UserControl):
             time_display.value = f"{minutes}分 {seconds}秒{milliseconds:02d}"
             e.control.page.update()
 
+        async def reset_and_start_timer(e):
+            await reset_timer(e)
+            await start_timer(e)
+            
         def update_status(e):
             status_text.value = f"設定時間: {slider_value_m.value}分 {slider_value_s.value}秒"
             update_text_value(e)
@@ -137,6 +141,7 @@ class Timer(ft.UserControl):
                         ft.ElevatedButton("開始", on_click=start_timer, width=100),
                         ft.ElevatedButton("停止/再開", on_click=stop_timer, width=100),
                         ft.ElevatedButton("リセット", on_click=reset_timer, width=100),
+                        ft.ElevatedButton("リセットして開始", on_click=reset_and_start_timer, width=100),
                     ],
                     alignment=ft.MainAxisAlignment.CENTER,
                     spacing=20
