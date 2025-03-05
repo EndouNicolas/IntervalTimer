@@ -1,5 +1,6 @@
 import flet as ft
 import signal
+import math
 import asyncio
 
 class Timer(ft.UserControl):
@@ -81,19 +82,19 @@ class Timer(ft.UserControl):
             await start_timer(e)
             
         def update_status(e):
-            status_text.value = f"設定時間: {slider_value_m.value}分 {slider_value_s.value}秒"
+            status_text.value = f"設定時間: {slider_value_m.value:.0f}分 {slider_value_s.value:.0f}秒"
             update_text_value(e)
             e.control.page.update()
             
         def update_text_value(e):
-            text_input_m.value = slider_value_m.value
-            text_input_s.value = slider_value_s.value
+            text_input_m.value=math.floor(slider_value_m.value)
+            text_input_s.value=math.floor(slider_value_s.value)
             text_input_s.update()
             text_input_m.update()
             
         def update_slider_value(e):
-            slider_value_m.value = text_input_m.value
-            slider_value_s.value = text_input_s.value
+            slider_value_m.value =math.floor(text_input_m.value)
+            slider_value_s.value =math.floor(text_input_s.value)
             slider_value_m.update()
             slider_value_s.update()
 
