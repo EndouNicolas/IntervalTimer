@@ -7,6 +7,7 @@ import timer as tm
 def main(page: ft.Page):
     # 初期設定
     page.title = "インターバルタイマー"
+    current_index = 1
 
     # ウィンドウイベントの処理
     def on_window_event(e: ft.WindowEvent):
@@ -23,6 +24,7 @@ def main(page: ft.Page):
     k = ft.Tabs(
         selected_index=1,
         animation_duration=300,
+        on_change=lambda e: update_tab_index(e),
         tabs=[
             ft.Tab(
                 text="時計",
@@ -42,11 +44,18 @@ def main(page: ft.Page):
         expand=1,
     )
 
+    def update_tab_index(e):
+        nonlocal current_index
+        current_index = e.control.selected_index
+        page.add(ft.Text(f"Current tab index: {current_index}"))
+        page.update()
+
+
     set_theme_button=ft.ElevatedButton(text="テーマ変更")
+    page.add(ft.Text(current_index))
     #layout = ft.Row(controls=[k,set_theme_button],alignment=ft.MainAxisAlignment.SPACE_BETWEEN,vertical_alignment=ft.CrossAxisAlignment.CENTER,)
     #page.add(layout)
     page.add(k)
-    
 
 
     # テキストインプットを取得する
@@ -77,12 +86,6 @@ def main(page: ft.Page):
     """
 
     # 必要ならここでUI要素を追加
-    k = ft.Text("")
-
-    page.add(k)
-    page.add(ft.Text())
-    page.update()
-
 
 # アプリケーションを開始
 ft.app(target=main)
