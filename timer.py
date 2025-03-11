@@ -156,4 +156,4 @@ class Timer(ft.UserControl):
         def get_slider_values():
             return slider_value_m.value, slider_value_s.value
         
-        return slider_ui, get_slider_values
+        return slider_ui, reset_and_start_timer

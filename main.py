@@ -1,7 +1,7 @@
 import time
 import keyboard
 import flet as ft
-import timer as tm
+from timer import Timer as tm
 
 
 def main(page: ft.Page):
@@ -16,7 +16,8 @@ def main(page: ft.Page):
 
 
     #スライダーのUIを構築
-    slider_ui, get_values = tm.Timer.Sliders()
+    #slider_ui, get_values,reset_and_start_timer = tm.Timer.Sliders()
+    slider_ui,reset_and_start_timer = tm.Sliders()
 #タブを構築
     """
     1ページ目は時計､2ページ目はインターバルタイマー､3ページ目はストップウォッチ
@@ -47,12 +48,20 @@ def main(page: ft.Page):
     def update_tab_index(e):
         nonlocal current_index
         current_index = e.control.selected_index
+        detect_key_event(e)
+        """
         page.add(ft.Text(f"Current tab index: {current_index}"))
         page.update()
+        """
+
+    def detect_key_event(e):
+        nonlocal current_index
+        if current_index == 1:
+            page.add(ft.Text(f"Current tab index: {current_index}"))
+            page.update()
 
 
     set_theme_button=ft.ElevatedButton(text="テーマ変更")
-    page.add(ft.Text(current_index))
     #layout = ft.Row(controls=[k,set_theme_button],alignment=ft.MainAxisAlignment.SPACE_BETWEEN,vertical_alignment=ft.CrossAxisAlignment.CENTER,)
     #page.add(layout)
     page.add(k)
@@ -90,12 +99,13 @@ def main(page: ft.Page):
 # アプリケーションを開始
 ft.app(target=main)
 
+"""
 
 def interval_timer(duration: int):
-    """
-    インターバルタイマーを指定秒数で開始。
-    スペースキーを押すとリセットして再スタート。
-    """
+    
+    #インターバルタイマーを指定秒数で開始。
+    #スペースキーを押すとリセットして再スタート。
+    
     while True:
         print(f"タイマー開始: {duration}秒")
         start_time = time.time()
@@ -129,3 +139,4 @@ if __name__ == "__main__":
         print("\nプログラムを終了します。")
     except ValueError:
         print("\n無効な入力です。整数を入力してください。")
+"""
