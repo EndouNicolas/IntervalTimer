@@ -2,6 +2,7 @@ import time
 import keyboard
 import flet as ft
 from timer import Timer as tm
+from clock import Clock as ck
 
 # ダミーのイベントオブジェクトを作成するクラス
 class DummyEvent:
@@ -70,7 +71,7 @@ def main(page: ft.Page):
     page.add(k)
 
     # テーマ変更ボタン
-    set_theme_button = ft.ElevatedButton(text="テーマ変更")
+    set_theme_button = ft.IconButton(icon=ft.Icons.SETTINGS,icon_size=20)
     page.add(set_theme_button)
 
 # アプリケーションを開始
