@@ -9,7 +9,7 @@ class Clock(ft.UserControl):
 
 
     def Time(page: ft.Page):
-        now_time =ft.Text("00:00.0")
+        now_time =ft.Text("00:00.0",size=80, weight=ft.FontWeight.W_900, selectable=True)
 
         async def set_time():
             nonlocal now_time
@@ -29,7 +29,9 @@ class Clock(ft.UserControl):
         page.run_task(set_time)
 
         clock_object =ft.Column(controls=[
-            ft.Container(content=now_time),
-        ])
+            ft.Container(content=now_time,padding=20,
+                alignment=ft.alignment.center,
+                border_radius=10),
+        ], alignment=ft.MainAxisAlignment.CENTER)
 
         return clock_object
