@@ -24,27 +24,25 @@ class Timer(ft.UserControl):
                 pass
 
         async def reset_and_start_timer(e):
-            update_text_value()
-            update_slider_value()
             await reset_timer(e)
             await start_timer(e)
 
         slider_value_m = ft.Slider(
             min=0, max=59, divisions=59, label="{value}M",
-            on_change=reset_and_start_timer
+            on_change=lambda e: update_text_value()
         )
         text_input_m = ft.TextField(
             value="0", width=100, label="分を入力",
-            on_change=reset_and_start_timer
+            on_change=lambda e: update_slider_value()
         )
 
         slider_value_s = ft.Slider(
             min=0, max=59, divisions=59, label="{value}S",
-            on_change=reset_and_start_timer
+            on_change=lambda e: update_text_value()
         )
         text_input_s = ft.TextField(
             value="0", width=100, label="秒を入力",
-            on_change=reset_and_start_timer
+            on_change=lambda e: update_slider_value()
         )
 
         status_text = ft.Text("設定時間: 0分 0秒")
@@ -78,12 +76,9 @@ class Timer(ft.UserControl):
                 return
             is_started = True
             is_stopped = False
-            if remaining_time <= 0:
-                m, s = int(slider_value_m.value), int(slider_value_s.value)
-                started_time = remaining_time = float(m * 60 + s)
-            else:
-                remaining_time = started_time
-            status_text.value = f"タイマー開始: {int(remaining_time // 60)}分 {int(remaining_time % 60)}秒"
+            m, s = int(slider_value_m.value), int(slider_value_s.value)
+            started_time = remaining_time = float(m * 60 + s)
+            status_text.value = f"タイマー開始: {m}分 {s}秒"
             page = e.control.page
             page.update()
             await count_down(page)
