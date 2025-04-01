@@ -1,6 +1,5 @@
 import flet as ft
 import signal
-import math
 import asyncio
 
 class Timer(ft.UserControl):

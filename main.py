@@ -2,7 +2,8 @@ import time
 import keyboard
 import flet as ft
 from timer import Timer as tm
-from clock import Clock as ck  # クラスはインスタンス化が必要
+from clock import Clock as ck
+from stopwatch import StopWatch as st
 
 # ダミーのイベントオブジェクトを作成するクラス
 class DummyEvent:
@@ -24,6 +25,8 @@ def main(page: ft.Page):
     slider_ui, reset_and_start_timer = tm.Sliders()
     clock_object = ck.Time(page)
 
+    # ストップウォッチのUIを構築
+    stopwatch_ui = st.stopwatch(page)
 
     # スペースキーが押されたときに `reset_and_start_timer` を呼び出す
     async def on_keyboard(e: ft.KeyboardEvent):
@@ -51,7 +54,7 @@ def main(page: ft.Page):
             ),
             ft.Tab(
                 text="ストップウォッチ",
-                content=ft.Text("This is Tab 3"),
+                content=ft.Container(content=stopwatch_ui, alignment=ft.alignment.center),
             ),
         ],
         expand=1,
