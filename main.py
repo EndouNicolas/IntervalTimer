@@ -1,9 +1,8 @@
-import time
-import keyboard
 import flet as ft
 from timer import Timer as tm
 from clock import Clock as ck
 from stopwatch import StopWatch as st
+from setting import Setting as stg
 
 # ダミーのイベントオブジェクトを作成するクラス
 class DummyEvent:
@@ -27,6 +26,8 @@ def main(page: ft.Page):
 
     # ストップウォッチのUIを構築
     stopwatch_ui = st.stopwatch(page)
+
+    setting_ui = stg.settingUI(page)
 
     # スペースキーが押されたときに `reset_and_start_timer` を呼び出す
     async def on_keyboard(e: ft.KeyboardEvent):
@@ -72,11 +73,16 @@ def main(page: ft.Page):
             page.add(ft.Text(f"Current tab index: {current_index}"))
             page.update()
 
+    def setting_popup(e):
+        setting_popup =ft.BottomSheet(content=setting_ui, open=True)
+        page.show_bottom_sheet(setting_popup)
+        page.update()
+
     # UI要素を追加
     page.add(k)
 
-    # テーマ変更ボタン
-    setting = ft.IconButton(icon=ft.Icons.SETTINGS, icon_size=20)
+    # 設定ボタン
+    setting = ft.IconButton(icon=ft.Icons.SETTINGS, icon_size=20,on_click=setting_popup, tooltip="設定",)
     page.add(setting)
 
 # アプリケーションを開始

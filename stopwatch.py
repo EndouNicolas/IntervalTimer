@@ -6,9 +6,9 @@ class StopWatch(ft.UserControl):
     def stopwatch(page: ft.Page):
         time_text = ft.Text("00:00.0", size=80, weight=ft.FontWeight.W_900, selectable=True)
         is_started = False
-        start_time = None  # スタート時の時間
-        elapsed_time = 0.0  # 停止時の経過時間
-        task = None  # 非同期タスクの参照
+        start_time = None  
+        elapsed_time = 0.0  
+        task = None  
 
         async def run_stopwatch():
             nonlocal elapsed_time, start_time
@@ -21,7 +21,7 @@ class StopWatch(ft.UserControl):
                 milliseconds = int((elapsed_time - int(elapsed_time)) * 10)
                 time_text.value = f"{minutes:02}:{seconds:02}.{milliseconds}"
                 page.update()
-                await asyncio.sleep(0.05)  # 0.05秒間隔に変更（滑らかで高負荷を防ぐ）
+                await asyncio.sleep(0.05)  
 
         async def start_and_stop(e):
             nonlocal is_started, task
@@ -31,14 +31,14 @@ class StopWatch(ft.UserControl):
             else:
                 start_and_stop_button.text = "ストップ"
                 is_started = True
-                task = asyncio.create_task(run_stopwatch())  # 非同期タスク開始
+                task = asyncio.create_task(run_stopwatch())
             page.update()
 
         def reset(e):
             nonlocal elapsed_time, is_started, task
             is_started = False
             if task:
-                task.cancel()  # 既存のタスクを停止
+                task.cancel()
             elapsed_time = 0.0
             time_text.value = "00:00.0"
             start_and_stop_button.text = "スタート"
