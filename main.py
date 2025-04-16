@@ -32,7 +32,7 @@ def main(page: ft.Page):
     # スペースキーが押されたときに `reset_and_start_timer` を呼び出す
     async def on_keyboard(e: ft.KeyboardEvent):
         if e.key == " ":
-            await reset_and_start_timer(DummyEvent(page))  # ← await を追加
+            await reset_and_start_timer(DummyEvent(page))
 
     # キーボードイベントを登録
     page.on_keyboard_event = on_keyboard
@@ -65,7 +65,6 @@ def main(page: ft.Page):
     def update_tab_index(e):
         nonlocal current_index
         current_index = e.control.selected_index
-        detect_key_event(e)
 
     def detect_key_event(e):
         nonlocal current_index
@@ -75,7 +74,7 @@ def main(page: ft.Page):
 
     def setting_popup(e):
         setting_popup =ft.BottomSheet(content=setting_ui, open=True)
-        page.show_bottom_sheet(setting_popup)
+        page.open(setting_popup)
         page.update()
 
     # UI要素を追加

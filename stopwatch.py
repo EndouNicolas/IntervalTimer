@@ -4,7 +4,7 @@ import time
 
 class StopWatch(ft.UserControl):
     def stopwatch(page: ft.Page):
-        time_text = ft.Text("00:00.0", size=80, weight=ft.FontWeight.W_900, selectable=True)
+        time_text = ft.Text("00:00.00", size=80, weight=ft.FontWeight.W_900, selectable=True)
         is_started = False
         start_time = None  
         elapsed_time = 0.0  
@@ -12,16 +12,21 @@ class StopWatch(ft.UserControl):
 
         async def run_stopwatch():
             nonlocal elapsed_time, start_time
-            start_time = time.perf_counter() - elapsed_time  # 再開時に時間を維持
-            while is_started:
-                now = time.perf_counter()
-                elapsed_time = now - start_time
-                minutes = int(elapsed_time // 60)
-                seconds = int(elapsed_time % 60)
-                milliseconds = int((elapsed_time - int(elapsed_time)) * 10)
-                time_text.value = f"{minutes:02}:{seconds:02}.{milliseconds}"
-                page.update()
-                await asyncio.sleep(0.05)  
+            start_time = time.perf_counter() - elapsed_time
+            try:
+                while True:
+                    if not is_started:
+                        break
+                    now = time.perf_counter()
+                    elapsed_time = now - start_time
+                    minutes = int(elapsed_time // 60)
+                    seconds = int(elapsed_time % 60)
+                    centiseconds = int((elapsed_time - int(elapsed_time)) * 100)
+                    time_text.value = f"{minutes:02}:{seconds:02}.{centiseconds:02}"
+                    page.update()
+                    await asyncio.sleep(0.01)
+            except asyncio.CancelledError:
+                pass  # キャンセルされたときに何もせず終わる
 
         async def start_and_stop(e):
             nonlocal is_started, task
@@ -40,7 +45,7 @@ class StopWatch(ft.UserControl):
             if task:
                 task.cancel()
             elapsed_time = 0.0
-            time_text.value = "00:00.0"
+            time_text.value = "00:00.00"
             start_and_stop_button.text = "スタート"
             page.update()
 
