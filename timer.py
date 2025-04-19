@@ -2,6 +2,8 @@ import flet as ft
 import signal
 import asyncio
 import time
+import playsound3 as playsound
+
 
 class Timer(ft.UserControl):
     signal.signal(signal.SIGINT, signal.SIG_IGN)
