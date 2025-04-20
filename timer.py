@@ -5,7 +5,7 @@ import time
 import playsound3 as playsound
 
 
-class Timer(ft.UserControl):
+class Timer(ft.Control):
     signal.signal(signal.SIGINT, signal.SIG_IGN)
 
     @staticmethod

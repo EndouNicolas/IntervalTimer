@@ -2,7 +2,7 @@ import flet as ft
 import asyncio
 import time
 
-class StopWatch(ft.UserControl):
+class StopWatch(ft.Control):
     def stopwatch(page: ft.Page):
         time_text = ft.Text("00:00.00", size=80, weight=ft.FontWeight.W_900, selectable=True)
         is_started = False

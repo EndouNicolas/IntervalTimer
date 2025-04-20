@@ -6,7 +6,7 @@ import time
 
 api_url = "https://3fe5a5f690efc790d4764f1c528a4ebb89fa4168.nict.go.jp/cgi-bin/json"
 
-class Clock(ft.UserControl):
+class Clock(ft.Control):
 
 
     def Time(page: ft.Page):

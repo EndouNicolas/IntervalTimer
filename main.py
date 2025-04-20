@@ -14,6 +14,8 @@ def main(page: ft.Page):
     # 初期設定
     page.title = "インターバルタイマー"
     current_index = 1
+    # ウィンドウアイコンの設定
+    page.window.icon = "rect1.ico"
 
     # ウィンドウイベントの処理
     def on_window_event(e: ft.WindowEvent):
@@ -83,6 +85,8 @@ def main(page: ft.Page):
     # 設定ボタン
     setting = ft.IconButton(icon=ft.Icons.SETTINGS, icon_size=20,on_click=setting_popup, tooltip="設定",)
     page.add(setting)
+
+
 
 # アプリケーションを開始
 ft.app(target=main)

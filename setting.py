@@ -1,6 +1,6 @@
 import flet as ft
 
-class Setting(ft.UserControl):
+class Setting(ft.Control):
     def __init__(self):
         super().__init__()
         self.selected_file = None
